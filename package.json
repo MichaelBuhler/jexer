@@ -1,0 +1,28 @@
+{
+  "name": "jexer",
+  "version": "0.0.1",
+  "description": "a lexer in javascript",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MichaelBuhler/jexer.git"
+  },
+  "keywords": [
+    "lex",
+    "flex",
+    "lexer",
+    "lexing",
+    "lexical analysis",
+    "lexical analyzer",
+    "tokenization",
+    "tokenizer"
+  ],
+  "author": "Michael Buhler",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MichaelBuhler/jexer/issues"
+  },
+  "homepage": "https://github.com/MichaelBuhler/jexer#readme"
+}
