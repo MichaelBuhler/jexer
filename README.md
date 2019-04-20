@@ -17,7 +17,7 @@ defined set of rules. (I recommend `jarser` for this stage:
 
 The abstract syntax tree is then converted into the target code. (This is the
 fun part that you get to do yourself! Check out `c.js` as an example:
-[`c.js` on GitHub](https://github.com/MichaelBuhler/jarser))
+[`c.js` on GitHub](https://github.com/MichaelBuhler/c.js))
 
 ## Installation
 
