@@ -44,15 +44,24 @@ const tokens = jexer.tokenize('string of source code');
 
 * Returns an instance of `Jexer`.
 
-#### Jexer.addRule([state,] regex, [tokenType [, newState]])
+#### Jexer.addRule([state,] regex, [tokenName [, newState]])
 
 * `state` \<string> the state where this rule applies
 * `regex` \<string> | \<RegExp> the pattern which will match this rule
-* `tokenType` \<any> TODO
+* `tokenName` \<string> the name of the token that this rule matches
 * `newState` \<string> the new state to enter when this rule is matched
 
 #### Jexer.tokenize(sourceCode)
 
 * `sourceCode` \<string> the source code to lex
 * returns \<Array\<Token>>
+
+### The `Token` object
+
+A `Token` is a 'plain old javascript object' with these keys:
+
+* `name` \<any> the name of the token
+* `text` \<string> the text that was matched
+* `line` \<integer> the line number of the first character of the token
+* `column` \<integer> the column number of the first character of the token
 
