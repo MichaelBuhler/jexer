@@ -7,7 +7,7 @@
 A _scanner_ converts a file into a sequence of characters. (You can rely on
 Node's `fs` module for this stage.)
 
-A _lexer_ converts a sequence of characters into a sequence of _tokens_, using
+A _lexer_ (or _tokenizer_) converts a sequence of characters into a sequence of _tokens_, using
 a defined set of rules. (This is what `jexer` does).
 
 A _parser_ builds a sequences of tokens into an _abstract syntax tree_, using a
