@@ -2,18 +2,20 @@
 
 `jexer` is a lexer. `jexer` is _not_ a lexer generator.
 
+Currently, all rules are defined at runtime.
+
 ## A quick lesson in compilation
 
 A _scanner_ converts a file into a sequence of characters. (If using Node.js,
 you can rely on the built-in `fs` modules for this.)
 
 A _lexer_ (or _tokenizer_) parses a sequence of characters into a sequence of
-_tokens_, using a defined set of rules. (This is what `jexer` does).
+_tokens_, using a defined set of rules. (This is what `jexer` does.)
 
 A _parser_ parses a sequence of tokens into an _abstract syntax tree_, using a
 defined set of rules. (I recommend `jarser` for this stage: 
 [`jarser` on npm](https://npmjs.com/jarser)
-[`jarser` on GitHub](https://github.com/MichaelBuhler/jarser) )
+[`jarser` on GitHub](https://github.com/MichaelBuhler/jarser))
 
 The abstract syntax tree is then converted into the target code. (This is the
 fun part that you get to do yourself! Check out `c.js` as an example:
@@ -94,8 +96,88 @@ lexer encounters text that doesn't match any defined rules.
 
 A `Token` is a 'plain old javascript object' with these keys:
 
-* `name` \<any> the name of the token
+* `name` \<string> the name of the token
 * `text` \<string> the text that was matched
 * `line` \<integer> the line number of the first character of the token
 * `column` \<integer> the column number of the first character of the token
 
+## Examples
+
+```js
+// ignore whitespace
+jexer.addRule(/\s/);
+
+// operators
+jexer.addRule(/\+/, 'PLUS');
+jexer.addRule(/\-/, 'MINUS');
+jexer.addRule(/\*/, 'ASTERISK');
+jexer.addRule(/\//, 'SLASH');
+jexer.addRule(/=/, 'EQUALS');
+
+// keywords
+jexer.addRule(/if/, 'IF');
+jexer.addRule(/true/, 'TRUE');
+jexer.addRule(/false/, 'FALSE');
+
+// variables
+jexer.addRule(/[a-zA-Z_$][0-9a-zA-Z_$]*/, 'VARIABLE');
+```
+
+```js
+// log and lex every character as its own token
+jexer.addRule(/./s, (text, line, column) => {
+    console.log('found '+JSON.stringify(text)+' at '+line+':'+column);
+}, 'CHARACTER');
+```
+
+```js
+// throw an error on tokens reserved for future use
+jexer.addRule(/(import|export)/, (text, line, column) => {
+    throw new Error('Error at '+line+':'+column+'. '+text+' is reserved!');
+});
+```
+
+Common uses for changing state:
+
+```js
+// SINGLE LINE COMMENTS
+// match '//', ignore it, and enter the 'COMMENT' state
+jexer.addRule(/\/\//, undefined, 'COMMENT');
+// in the 'COMMENT' state, watch for a newline, and return to 'INITIAL' state
+jexer.addRule('COMMENT', /\n/, undefined, 'INITIAL');
+// ignore any other characters in the comment
+jexer.addRule('COMMENT', /./);
+```
+
+```js
+// MULTI LINE COMMENTS
+// match '/*', ignore it, and enter the 'COMMENT' state
+jexer.addRule(/\/\*/, undefined, 'MULTILINE_COMMENT');
+// match '*/' newline, and return to 'INITIAL' state
+jexer.addRule('MULTILINE_COMMENT', /\*\//, undefined, 'INITIAL');
+// ignore all characters in the comment, even new lines
+jexer.addRule('MULTILINE_COMMENT', /./s);
+```
+
+Below is a full example of the definition of the lexical grammar for a simple
+calculator language which ignores whitespace; has semicolon terminated
+statements, single-line comments, and variables; has addition, subtraction,
+and assignment operators; and supports integer, floating point, binary, and
+hexadecimal number literals. Any other token (such as `*` or `/` ) will throw
+a lexing error.
+
+```js
+jexer.addRule(/\s/);
+jexer.addRule(/;/, 'SEMICOLON');
+jexer.addRule(/\n#/, undefined, 'COMMENT');
+jexer.addRule('COMMENT', /\n/, undefined, 'INITIAL');
+jexer.addRule('COMMENT', /./);
+jexer.addRule(/[a-z][a-zA-Z]*/, 'VARIABLE');
+jexer.addRule(/\+/, 'PLUS');
+jexer.addRule(/-/, 'MINUS');
+jexer.addRule(/=/, 'EQUALS');
+jexer.addRule(/[0-9]+/, 'INTEGER');
+jexer.addRule(/[0-9]+\.[0-9]+/, 'FLOAT');
+jexer.addRule(/0b[0-1]+/, 'BINARY_LITERAL');
+jexer.addRule(/0x[0-9a-fA-F]+/, 'HEXADECIMAL_LITERAL');
+```
