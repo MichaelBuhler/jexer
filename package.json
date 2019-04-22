@@ -21,8 +21,8 @@
     "tokenization",
     "tokenizer"
   ],
-  "author": "Michael Buhler",
-  "license": "ISC",
+  "author": "Michael Buhler <michael@michaelbuhler.com> (http://michaelbuhler.com/)",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/MichaelBuhler/jexer/issues"
   },
