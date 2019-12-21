@@ -1,1 +1,3 @@
-module.exports = require('./lib/Jexer');
+const { Jexer } = require('./lib/Jexer');
+
+module.exports.Jexer = Jexer;

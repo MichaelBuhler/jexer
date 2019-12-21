@@ -1,6 +1,6 @@
 {
   "name": "jexer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "a lexer in javascript",
   "main": "index.js",
   "scripts": {
@@ -26,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/MichaelBuhler/jexer/issues"
   },
-  "homepage": "https://github.com/MichaelBuhler/jexer#readme"
+  "homepage": "https://github.com/MichaelBuhler/jexer#readme",
+  "devDependencies": {
+    "typescript": "^2.4.2"
+  }
 }
